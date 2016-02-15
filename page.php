@@ -10,7 +10,7 @@
  * @package Match
  */
 
-get_header(); ?>
+get_header(2); ?>
 
 <div id="content" class="site-content">
 
