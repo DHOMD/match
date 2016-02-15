@@ -5,9 +5,7 @@
  * @package Match
  */
 ?>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
 	<div id="secondary" class="sidebar widget-area" role="complementary">
-
 		<?php do_action( 'before_sidebar' ); ?>
 		<?php if ( ! dynamic_sidebar( 'sidebar-1' ) ) : ?>
 
