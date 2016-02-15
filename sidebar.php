@@ -5,7 +5,7 @@
  * @package Match
  */
 ?>
-<div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+<div>
 	<div id="secondary" class="sidebar widget-area" role="complementary" itemscope="itemscope" itemtype="http://schema.org/WPSideBar">  
 		
 		<?php do_action( 'before_sidebar' ); ?>
