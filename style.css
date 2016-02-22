@@ -1321,7 +1321,7 @@ form.search-form:before {
 11.1 Site Content
 --------------------------------------------------------------*/
 .site-content {
-  padding: 50px 0;
+  padding: 25px 0;
 }
 
 /*--------------------------------------------------------------
@@ -1343,8 +1343,8 @@ form.search-form:before {
 }
 
 .entry-header {
-  margin: 50px 0;
-  padding: 0 50px;
+  margin: 25px 0;
+  padding: 0 25px;
   text-align: center;
 }
 
