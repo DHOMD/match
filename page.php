@@ -10,19 +10,19 @@
  * @package Match
  */
 
-get_header(2); ?>
+get_header(); ?>
 
 <div id="content" class="site-content">
 
 	<div class="container">
 		<div class="row">
 
-			<div id="primary" class="content-area">
-				<main id="main" class="site-main" role="main" itemprop="mainContentOfPage">	  
-				  
+			<div id="primary" class="content-area col-xs-12 col-sm-12 col-md-12 col-lg-8">
+				<main id="main" class="site-main" role="main">
+
 					<?php while ( have_posts() ) : the_post(); ?>
 
-						<?php get_template_part( 'content', 'page' ); ?>
+						<?php get_template_part( 'template-parts/content', 'page' ); ?>
 
 						<?php
 							// If comments are open or we have at least one comment, load up the comment template

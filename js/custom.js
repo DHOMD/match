@@ -10,7 +10,7 @@
  */
 
 ( function( $ ) {
-			
+
 	var match = {
 
 		// Menu
@@ -22,7 +22,7 @@
 				animation: 		{ opacity : 'show', height : 'show' },
 				speed: 			'fast',
 				autoArrows: 	false,
-				cssArrows: 		true 
+				cssArrows: 		true
 			});
 
 			// Mobile Menu
@@ -35,12 +35,12 @@
 
 		// Fitvids
 		fitvidsInit: function() {
-			
+
 			// Fitvids - For responsive videos
 			setTimeout( function() {
 				$( '.entry-content' ).fitVids();
 			}, 500 );
-		
+
 		}
 
 	}
@@ -55,5 +55,5 @@
 		match.fitvidsInit();
 
 	} );
-	
+
 } )( jQuery );

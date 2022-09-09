@@ -13,8 +13,8 @@ get_header(); ?>
 		<div class="row">
 
 			<div id="primary" class="content-area col-xs-12 col-sm-12 col-md-12 col-lg-8">
-				<main id="main" class="site-main" role="main" itemprop="mainContentOfPage" itemscope="itemscope" itemtype="http://schema.org/Blog">	  
-				  
+				<main id="main" class="site-main" role="main">
+
 				<?php if ( have_posts() ) : ?>
 
 					<header class="page-header">
@@ -29,16 +29,16 @@ get_header(); ?>
 							 * If you want to override this in a child theme, then include a file
 							 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
 							 */
-							get_template_part( 'content', get_post_format() );
+							get_template_part( 'template-parts/content', get_post_format() );
 						?>
 
 					<?php endwhile; ?>
 
-					<?php match_paging_nav(); ?>
+					<?php match_the_posts_pagination(); ?>
 
 				<?php else : ?>
-				        
-				<?php get_template_part( 'content', 'none' ); ?>
+
+				<?php get_template_part( 'template-parts/content', 'none' ); ?>
 
 				<?php endif; ?>
 

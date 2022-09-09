@@ -13,8 +13,8 @@ get_header(); ?>
 		<div class="row">
 
 			<div id="primary" class="content-area col-xs-12 col-sm-12 col-md-12 col-lg-8">
-				<main id="main" class="site-main" role="main" itemprop="mainContentOfPage" itemscope="itemscope" itemtype="http://schema.org/Blog">	  
-				  
+				<main id="main" class="site-main" role="main">
+
 				<?php while ( have_posts() ) : the_post(); ?>
 
 					<?php
@@ -23,10 +23,10 @@ get_header(); ?>
 						* If not, use the content-single.php template.
 						*/
 						$format = ( '' != get_post_format() ) ? get_post_format() : 'single';
-						get_template_part( 'content', $format );
+						get_template_part( 'template-parts/content', $format );
 					?>
 
-					<?php match_post_nav(); ?>
+					<?php match_the_post_pagination(); ?>
 
 					<?php
 						// If comments are open or we have at least one comment, load up the comment template

@@ -7,130 +7,40 @@
  * @package Match
  */
 
-if ( ! function_exists( 'match_paging_nav' ) ) :
+if ( ! function_exists( 'match_the_posts_pagination' ) ) :
 /**
  * Display navigation to next/previous set of posts when applicable.
  *
  * @return void
  */
-function match_paging_nav() {
-	// Don't print empty markup if there's only one page.
-	if ( $GLOBALS['wp_query']->max_num_pages < 2 ) {
-		return;
-	}
-	?>
-	<nav class="navigation paging-navigation" role="navigation">
-		<h1 class="screen-reader-text"><?php _e( 'Posts navigation', 'match' ); ?></h1>
-		<div class="nav-links">
+function match_the_posts_pagination() {
 
-			<?php if ( get_next_posts_link() ) : ?>
-			<div class="nav-previous"><?php next_posts_link( __( '<span class="meta-nav">&larr;</span> Older posts', 'match' ) ); ?></div>
-			<?php endif; ?>
+	// Previous/next posts navigation @since 4.1.0
+	the_posts_pagination( array(
+		'prev_text'          => '<span class="screen-reader-text">' . esc_html__( 'Previous Page', 'match' ) . '</span>',
+		'next_text'          => '<span class="screen-reader-text">' . esc_html__( 'Next Page', 'match' ) . '</span>',
+		'before_page_number' => '<span class="meta-nav screen-reader-text">' . esc_html__( 'Page', 'match' ) . ' </span>',
+	) );
 
-			<?php if ( get_previous_posts_link() ) : ?>
-			<div class="nav-next"><?php previous_posts_link( __( 'Newer posts <span class="meta-nav">&rarr;</span>', 'match' ) ); ?></div>
-			<?php endif; ?>
-
-		</div><!-- .nav-links -->
-	</nav><!-- .navigation -->
-	<?php
 }
 endif;
 
-if ( ! function_exists( 'match_post_nav' ) ) :
+if ( ! function_exists( 'match_the_post_pagination' ) ) :
 /**
- * Display navigation to next/previous post when applicable.
+ * Previous/next post navigation.
  *
  * @return void
  */
-function match_post_nav() {
-	// Don't print empty markup if there's nowhere to navigate.
-	$previous = ( is_attachment() ) ? get_post( get_post()->post_parent ) : get_adjacent_post( false, '', true );
-	$next     = get_adjacent_post( false, '', false );
+function match_the_post_pagination() {
 
-	if ( ! $next && ! $previous ) {
-		return;
-	}
-	?>
-	<nav class="navigation post-navigation" role="navigation">
-		<h1 class="screen-reader-text"><?php _e( 'Post navigation', 'match' ); ?></h1>
-		<div class="nav-links">
-			<?php
-				previous_post_link( '<div class="nav-previous">%link</div>', _x( '<span class="meta-nav">&larr;</span> %title', 'Previous post link', 'match' ) );
-				next_post_link(     '<div class="nav-next">%link</div>',     _x( '%title <span class="meta-nav">&rarr;</span>', 'Next post link',     'match' ) );
-			?>
-		</div><!-- .nav-links -->
-	</nav><!-- .navigation -->
-	<?php
+	// Previous/next post navigation @since 4.1.0.
+	the_post_navigation( array(
+		'next_text' => '<span class="post-title">%title</span>' . '<span class="meta-nav">' . esc_html__( '&rarr;', 'match' ) . '</span> ',
+		'prev_text' => '<span class="meta-nav">' . esc_html__( '&larr;', 'match' ) . '</span>' . '<span class="post-title">%title</span>',
+	) );
+
 }
 endif;
-
-if ( ! function_exists( 'match_comment' ) ) :
-/**
- * Template for comments and pingbacks.
- *
- * Used as a callback by wp_list_comments() for displaying the comments.
- */
-function match_comment( $comment, $args, $depth ) {
-	$GLOBALS['comment'] = $comment;
-
-	if ( 'pingback' == $comment->comment_type || 'trackback' == $comment->comment_type ) : ?>
-
-	<li id="comment-<?php comment_ID(); ?>" <?php comment_class(); ?>>
-		<div class="comment-body">
-			<?php _e( 'Pingback:', 'match' ); ?> <?php comment_author_link(); ?> <?php edit_comment_link( __( 'Edit', 'match' ), '<span class="edit-link">', '</span>' ); ?>
-		</div>
-
-	<?php else : ?>
-
-	<li id="comment-<?php comment_ID(); ?>" <?php comment_class( empty( $args['has_children'] ) ? '' : 'parent' ); ?>>
-		<article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
-			<footer class="comment-meta">
-				<div class="comment-author vcard">
-					<?php 
-					$avatar_size = 68;
-						if ( '0' != $comment->comment_parent ) {
-							$avatar_size = 39;
-						}
-					
-					echo get_avatar( $comment, $avatar_size );
-					?>
-					<?php printf( __( '%s <span class="says">says:</span>', 'match' ), sprintf( '<cite class="fn">%s</cite>', get_comment_author_link() ) ); ?>
-				</div><!-- .comment-author -->
-
-				<div class="comment-metadata">
-					<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>">
-						<time datetime="<?php comment_time( 'c' ); ?>">
-							<?php printf( _x( '%1$s at %2$s', '1: date, 2: time', 'match' ), get_comment_date(), get_comment_time() ); ?>
-						</time>
-					</a>
-					<?php edit_comment_link( __( 'Edit', 'match' ), '<span class="edit-link">', '</span>' ); ?>
-				</div><!-- .comment-metadata -->
-
-				<?php if ( '0' == $comment->comment_approved ) : ?>
-				<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'match' ); ?></p>
-				<?php endif; ?>
-			</footer><!-- .comment-meta -->
-
-			<div class="comment-content">
-				<?php comment_text(); ?>
-			</div><!-- .comment-content -->
-
-			<?php
-				comment_reply_link( array_merge( $args, array(
-					'add_below' => 'div-comment',
-					'depth'     => $depth,
-					'max_depth' => $args['max_depth'],
-					'before'    => '<div class="reply">',
-					'after'     => '</div>',
-				) ) );
-			?>
-		</article><!-- .comment-body -->
-
-	<?php
-	endif;
-}
-endif; // ends check for match_comment()
 
 if ( ! function_exists( 'match_posted_on' ) ) :
 /**
@@ -158,7 +68,7 @@ function match_posted_on() {
 			esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
 			esc_html( get_the_author() )
 		)
-	);	
+	);
 
 }
 endif;
@@ -217,15 +127,10 @@ function match_post_thumbnail_standard() {
 		</div><!-- .entry-format -->
 	</div><!-- .entry-media -->
 	<?php
-		
-		//printf( '<div class="entry-format"><span class="entry-format-icon"><i class="fa fa-thumb-tack"></i> %1$s</span></div>', __( 'Featued', 'match' ) );				
-	
 	} elseif ( '' != get_the_post_thumbnail() ) {
-		
 		match_post_thumbnail();
-	
 	} // if ( is_sticky() && is_home() && ! is_paged() )
-	
+
 }
 
 /**
@@ -238,7 +143,7 @@ function match_post_thumbnail_standard() {
  * @return void
 */
 function match_post_thumbnail_backfill() {
-	
+
 	if ( '' != get_post_format() || ( is_sticky() && ! is_singular() ) ) :
 	?>
 	<div class="post-thumbnail post-thumbnail-backfill"></div>
@@ -255,7 +160,7 @@ function match_post_thumbnail_backfill() {
  * @return void
 */
 function match_post_thumbnail() {
-	
+
 	// Post password check
 	if ( post_password_required() || '' == get_the_post_thumbnail() ) {
 		match_post_thumbnail_backfill();
@@ -279,3 +184,70 @@ function match_post_thumbnail() {
 
 	<?php endif; // End is_singular()
 }
+
+if ( ! function_exists( 'match_comment' ) ) :
+/**
+ * Template for comments and pingbacks.
+ *
+ * Used as a callback by wp_list_comments() for displaying the comments.
+ */
+function match_comment( $comment, $args, $depth ) {
+	$GLOBALS['comment'] = $comment;
+
+	if ( 'pingback' == $comment->comment_type || 'trackback' == $comment->comment_type ) : ?>
+
+	<li id="comment-<?php comment_ID(); ?>" <?php comment_class(); ?>>
+		<div class="comment-body">
+			<?php _e( 'Pingback:', 'match' ); ?> <?php comment_author_link(); ?> <?php edit_comment_link( __( 'Edit', 'match' ), '<span class="edit-link">', '</span>' ); ?>
+		</div>
+
+	<?php else : ?>
+
+	<li id="comment-<?php comment_ID(); ?>" <?php comment_class( empty( $args['has_children'] ) ? '' : 'parent' ); ?>>
+		<article id="div-comment-<?php comment_ID(); ?>" class="comment-body">
+			<footer class="comment-meta">
+				<div class="comment-author vcard">
+					<?php
+					$avatar_size = 68;
+						if ( '0' != $comment->comment_parent ) {
+							$avatar_size = 39;
+						}
+
+					echo get_avatar( $comment, $avatar_size );
+					?>
+					<?php printf( __( '%s <span class="says">says:</span>', 'match' ), sprintf( '<cite class="fn">%s</cite>', get_comment_author_link() ) ); ?>
+				</div><!-- .comment-author -->
+
+				<div class="comment-metadata">
+					<a href="<?php echo esc_url( get_comment_link( $comment->comment_ID ) ); ?>">
+						<time datetime="<?php comment_time( 'c' ); ?>">
+							<?php printf( _x( '%1$s at %2$s', '1: date, 2: time', 'match' ), get_comment_date(), get_comment_time() ); ?>
+						</time>
+					</a>
+					<?php edit_comment_link( __( 'Edit', 'match' ), '<span class="edit-link">', '</span>' ); ?>
+				</div><!-- .comment-metadata -->
+
+				<?php if ( '0' == $comment->comment_approved ) : ?>
+				<p class="comment-awaiting-moderation"><?php _e( 'Your comment is awaiting moderation.', 'match' ); ?></p>
+				<?php endif; ?>
+			</footer><!-- .comment-meta -->
+
+			<div class="comment-content">
+				<?php comment_text(); ?>
+			</div><!-- .comment-content -->
+
+			<?php
+				comment_reply_link( array_merge( $args, array(
+					'add_below' => 'div-comment',
+					'depth'     => $depth,
+					'max_depth' => $args['max_depth'],
+					'before'    => '<div class="reply">',
+					'after'     => '</div>',
+				) ) );
+			?>
+		</article><!-- .comment-body -->
+
+	<?php
+	endif;
+}
+endif; // ends check for match_comment()

@@ -18,12 +18,12 @@ get_header(); ?>
 		<div class="row">
 
 			<section id="primary" class="content-area image-attachment col-lg-12">
-				<main id="main" class="site-main" role="main" itemprop="mainContentOfPage">	  
-				  
+				<main id="main" class="site-main" role="main">
+
 					<?php while ( have_posts() ) : the_post(); ?>
 
-						<article id="post-<?php the_ID(); ?>" <?php post_class(); ?> itemscope="itemscope" itemtype="http://schema.org/CreativeWork">
-							
+						<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+
 							<header class="entry-header">
 								<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
 
@@ -65,7 +65,7 @@ get_header(); ?>
 							<footer class="entry-meta entry-meta-footer">
 								<?php edit_post_link( __( 'Edit', 'match' ), '<span class="edit-link">', '</span>' ); ?>
 							</footer><!-- .entry-meta -->
-						
+
 						</article><!-- #post-## -->
 
 						<nav id="image-navigation" class="navigation image-navigation">

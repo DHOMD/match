@@ -25,7 +25,7 @@
 	},
 	mobileMenu = 'slicknav',
 	prefix = 'slicknav';
-	
+
 	function Plugin( element, options ) {
 		this.element = element;
 
@@ -34,18 +34,18 @@
         // is generally empty as we don't want to alter the default options for
         // future instances of the plugin
         this.settings = $.extend( {}, defaults, options) ;
-        
+
         this._defaults = defaults;
         this._name = mobileMenu;
-        
+
         this.init();
 	}
-	
+
 	Plugin.prototype.init = function () {
         var $this = this;
 		var menu = $(this.element);
 		var settings = this.settings;
-		
+
 		// clone menu if needed
 		if (settings.duplicate) {
 			$this.mobileNav = menu.clone();
@@ -57,27 +57,27 @@
 		}
 		else
 			$this.mobileNav = menu;
-		
+
 		// styling class for the button
 		var iconClass = prefix+'-icon';
-		
+
 		if (settings.label == '') {
 			iconClass += ' '+prefix+'-no-text';
 		}
-		
+
 		if (settings.parentTag == 'a') {
 			settings.parentTag = 'a href="#"';
 		}
-		
+
 		// create menu bar
 		$this.mobileNav.attr('class', prefix+'-nav');
 		var menuBar = $('<div class="'+prefix+'-menu"></div>');
 		$this.btn = $('.slicknav-btn');
 		//$this.btn = $('<'+settings.parentTag+' aria-haspopup="true" tabindex="0" class="'+prefix+'-btn '+prefix+'-collapsed"><span class="'+prefix+'-menutxt">'+settings.label+'</span><span class="'+iconClass+'"><span class="'+prefix+'-icon-bar"></span><span class="'+prefix+'-icon-bar"></span><span class="'+prefix+'-icon-bar"></span></span></a>');
-		//$(menuBar).append($this.btn);		
+		//$(menuBar).append($this.btn);
 		$(settings.prependTo).prepend(menuBar);
 		menuBar.append($this.mobileNav);
-		
+
 		// iterate over structure adding additional structure
 		var items = $this.mobileNav.find('li');
 		$(items).each(function () {
@@ -85,10 +85,10 @@
 			data = {};
 			data.children = item.children('ul').attr('role','menu');
 			item.data("menu", data);
-			
+
 			// if a list item has a nested menu
 			if (data.children.length > 0) {
-			
+
 				// select all text before the child menu
 				var a = item.contents();
 				var nodes = [];
@@ -100,21 +100,21 @@
 						return false;
 					}
 				});
-				
+
 				// wrap item text with tag and add classes
 				var wrap = $(nodes).wrapAll('<'+settings.parentTag+' role="menuitem" aria-haspopup="true" tabindex="-1" class="'+prefix+'-item"/>').parent();
-				
+
 				item.addClass(prefix+'-collapsed');
 				item.addClass(prefix+'-parent');
-				
+
 				// create parent arrow
 				$(nodes).last().after('<span class="'+prefix+'-arrow">'+settings.closedSymbol+'</span>');
-				
-			
+
+
 			} else if ( item.children().length == 0) {
 				 item.addClass(prefix+'-txtnode');
 			}
-			
+
 			// accessibility for links
 			item.children('a').attr('role', 'menuitem').click(function(){
 				//Emulate menu close if set
@@ -122,40 +122,40 @@
 					$($this.btn).click();
 			});
 		});
-		
+
 		// structure is in place, now hide appropriate items
 		$(items).each(function () {
 			var data = $(this).data("menu");
 			$this._visibilityToggle(data.children, false, null, true);
 		});
-		
+
 		// finally toggle entire menu
 		$this._visibilityToggle($this.mobileNav, false, 'init', true);
-		
+
 		// accessibility for menu button
 		$this.mobileNav.attr('role','menu');
-		
+
 		// outline prevention when using mouse
 		$(document).mousedown(function(){
 			$this._outlines(false);
 		});
-		
+
 		$(document).keyup(function(){
 			$this._outlines(true);
 		});
-		
+
 		// menu button click
 		$($this.btn).click(function (e) {
 			e.preventDefault();
-			$this._menuToggle();			
+			$this._menuToggle();
 		});
-		
+
 		// click on menu parent
 		$this.mobileNav.on('click', '.'+prefix+'-item', function(e){
 			e.preventDefault();
 			$this._itemClick($(this));
 		});
-		
+
 		// check for enter key on menu button and menu parents
 		$($this.btn).keydown(function (e) {
 			var ev = e || event;
@@ -164,7 +164,7 @@
 				$this._menuToggle();
 			}
 		});
-		
+
 		$this.mobileNav.on('keydown', '.'+prefix+'-item', function(e) {
 			var ev = e || event;
 			if(ev.keyCode == 13) {
@@ -172,7 +172,7 @@
 				$this._itemClick($(e.target));
 			}
 		});
-		
+
 		// allow links clickable within parent tags if set
 		if (settings.allowParentLinks) {
 			$('.'+prefix+'-item a').click(function(e){
@@ -180,13 +180,13 @@
 			});
 		}
     };
-	
+
 	//toggle menu
 	Plugin.prototype._menuToggle = function(el){
 		var $this = this;
 		var btn = $this.btn;
 		var mobileNav = $this.mobileNav;
-		
+
 		if (btn.hasClass(prefix+'-collapsed')) {
 			btn.removeClass(prefix+'-collapsed');
 			btn.addClass(prefix+'-open');
@@ -197,7 +197,7 @@
 		btn.addClass(prefix+'-animating');
 		$this._visibilityToggle(mobileNav, true, btn);
 	}
-	
+
 	// toggle clicked items
 	Plugin.prototype._itemClick = function(el) {
 		var $this = this;
@@ -233,14 +233,14 @@
 		var duration = 0;
 		if (animate)
 			duration = settings.duration;
-		
+
 		if (el.hasClass(prefix+'-hidden')) {
 			el.removeClass(prefix+'-hidden');
 			el.slideDown(duration, settings.easingOpen, function(){
-				
+
 				$(trigger).removeClass(prefix+'-animating');
 				$(trigger).parent().removeClass(prefix+'-animating');
-				
+
 				//Fire open callback
 				if (!init) {
 					settings.open(trigger);
@@ -256,10 +256,10 @@
 				items.attr('tabindex', '-1');
 				$this._setVisAttr(el, true);
 				el.hide(); //jQuery 1.7 bug fix
-				
+
 				$(trigger).removeClass(prefix+'-animating');
 				$(trigger).parent().removeClass(prefix+'-animating');
-				
+
 				//Fire init or close callback
 				if (!init)
 					settings.close(trigger);
@@ -272,10 +272,10 @@
 	// set attributes of element and children based on visibility
 	Plugin.prototype._setVisAttr = function(el, hidden) {
 		var $this = this;
-		
+
 		// select all parents that aren't hidden
 		var nonHidden = el.children('li').children('ul').not('.'+prefix+'-hidden');
-		
+
 		// iterate over all items setting appropriate tags
 		if (!hidden) {
 			nonHidden.each(function(){
@@ -316,25 +316,25 @@
 			$('.'+prefix+'-item, .'+prefix+'-btn').css('outline','');
 		}
 	}
-	
+
 	Plugin.prototype.toggle = function(){
 		$this._menuToggle();
 	}
-	
+
 	Plugin.prototype.open = function(){
 		$this = this;
 		if ($this.btn.hasClass(prefix+'-collapsed')) {
 			$this._menuToggle();
 		}
 	}
-	
+
 	Plugin.prototype.close = function(){
 		$this = this;
 		if ($this.btn.hasClass(prefix+'-open')) {
 			$this._menuToggle();
 		}
 	}
-	
+
 	$.fn[mobileMenu] = function ( options ) {
 		var args = arguments;
 

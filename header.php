@@ -1,16 +1,13 @@
 <?php
 /**
- * The Header for our theme.
+ * The header for our theme.
  *
- * Displays all of the <head> section and everything
+ * Displays all of the <head> section and everything up till <div id="content">
  *
  * @package Match
  */
 ?><!DOCTYPE html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" <?php language_attributes(); ?>> <![endif]-->
-<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8" <?php language_attributes(); ?>> <![endif]-->
-<!--[if IE 8]> <html class="no-js lt-ie9" <?php language_attributes(); ?>> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" <?php language_attributes(); ?>> <!--<![endif]-->
+<html <?php language_attributes(); ?>>
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,21 +16,22 @@
 
 <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?> itemscope="itemscope" itemtype="http://schema.org/WebPage">
-<div id="page" class="site-wrapper hfeed site">
+<body <?php body_class(); ?>>
+<?php wp_body_open(); ?>
+<div id="page" class="site-wrapper site">
 	<?php do_action( 'before' ); ?>
-	<header id="masthead" class="site-header" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader">
+	<header id="masthead" class="site-header" role="banner">
 
 		<div class="sitebar">
 			<div class="container">
 				<div class="sitebar-inside">
 
 					<div class="site-branding">
-						<h2 class="site-title" itemprop="headline"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h2>
-						<h3 class="site-description" item	prop="description"><?php bloginfo( 'description' ); ?></h3>
+						<h2 class="site-title"><a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>" rel="home"><?php bloginfo( 'name' ); ?></a></h2>
+						<h3 class="site-description"><?php bloginfo( 'description' ); ?></h3>
 					</div>
 
-					<nav id="site-navigation" class="main-navigation" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement">
+					<nav id="site-navigation" class="main-navigation" role="navigation">
 						<div class="menu-toggle-wrapper">
 							<a href="#" tabindex="0" class="fa fa-bars fa-2x slicknav-btn slicknav-collapsed"><span class="slicknav-btn-text">Menu</span></a>
 						</div>
@@ -41,10 +39,11 @@
 
 						<?php
 						wp_nav_menu( apply_filters( 'match_wp_nav_menu_args', array(
-							'container' => 'div',
+							'container'       => 'div',
 							'container_class' => 'site-primary-menu',
-							'theme_location' => 'primary',
-							'menu_class' => 'primary-menu sf-menu'
+							'theme_location'  => 'primary',
+							'menu_class'      => 'primary-menu sf-menu',
+							'depth'           => 3,
 						) ) );
 						?>
 					</nav>
