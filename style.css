@@ -455,12 +455,12 @@ blockquote cite {
 3.1 Links
 --------------------------------------------------------------*/
 a {
-  color: #f07677;
+  color: #2ee8e8;
   text-decoration: none;
 }
 
 a:visited {
-  color: #f07677;
+  color: #2ee8e8;
 }
 
 a:hover,
@@ -1314,7 +1314,7 @@ textarea {
 
 /* Site info */
 .site-info {
-  background: #cedbd9;
+  background: #d1fafa;
   color: #fff;
   font-size: 13px;
   padding: 120px 0;
